@@ -1,21 +1,39 @@
-require('dotenv').config()
-const express = require('express')
-const app = express()
-const port = process.env.PORT
+require("dotenv").config();
+require('./database/con')
+const express = require("express");
+const { PositionModel } = require("./database/PositionModel");
 
-app.use(express.json())
+const app = express();
+const port = process.env.PORT;
 
-app.get('/', (req, res) => {
-  console.log('hellooo');
-  res.send('Hello World!')
-})
+app.use(express.json());
 
-app.post('/position', (req,res)=>{
-    console.log(req.body);
+app.get("/", (req, res) => {
+  console.log("Opa");
+  res.send("Ok");
+});
 
-    return res.send('ok')
-})
+app.post("/position", async (req, res) => {
+  const { lat, lon, speed, direction } = req.body;
+  console.log(req.body);
+
+try {
+  const newPosition = new PositionModel({
+    position: { type: "Point", coordinates: [lon, lat] },
+    speed: speed,
+    direction: direction,
+  });
+  
+  await newPosition.save()
+  console.log('position saved');
+  
+} catch (error) {
+  console.log('save position error', error);
+}
+
+  return res.send("ok");
+});
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+  console.log(`mobile gateway start on port ${port}`);
+});
