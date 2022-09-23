@@ -14,7 +14,7 @@ app.get("/", (req, res) => {
 });
 
 app.post("/position", async (req, res) => {
-  const { lat, lon, speed, direction } = req.body;
+  const { lat, lon, speed, direction, address } = req.body;
   console.log(req.body);
 
 try {
@@ -22,6 +22,7 @@ try {
     position: { type: "Point", coordinates: [lon, lat] },
     speed: speed,
     direction: direction,
+    address
   });
   
   await newPosition.save()
