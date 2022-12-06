@@ -1,22 +1,8 @@
-require("dotenv").config();
-const mongoose = require("mongoose");
+const knex = require("knex");
 
-mongoose.Promise = global.Promise;
+const knexfile = require("../../knexfile");
 
-const config = {
-  uri: process.env.MONGO_URI,
-  options: {
-    useNewUrlParser: true,
-  },
-};
+const env = process.env.NODE_ENV || "development";
+const configOptions = knexfile[env];
 
-mongoose.connection.on("open", () => {
-  console.log("Successfully connected to database.");
-});
-
-mongoose.connection.on("error", (err) => {
-  console.log("error", err);
-});
-
-mongoose.connect(config.uri, config.options);
-
+module.exports = knex(configOptions);
