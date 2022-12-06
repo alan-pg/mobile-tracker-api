@@ -27,7 +27,7 @@ app.post("/position", async (req, res) => {
       created_at: new Date(),
     });
     if (saved) {
-      console.log("position saved");
+      console.log("position saved*", saved);
     } else {
       console.log("position not saved");
     }
