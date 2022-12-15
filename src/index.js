@@ -39,15 +39,15 @@ app.post("/position", async (req, res) => {
 });
 
 app.get("/position", async (req, res) => {
-  const { inital_date, final_date } = req.query;
+  const { inital_date, final_date, device_id } = req.query;
   const initialDate = new Date(inital_date);
   const finalDate = new Date(final_date);
   console.log("find position", { initialDate, finalDate });
   try {
-    const positions = await db("positions").whereBetween("date", [
-      initialDate,
-      finalDate,
-    ]);
+    const positions = await db("positions")
+      .where("device_id", device_id)
+      .whereBetween("date", [initialDate, finalDate])
+      .orderBy("date", "desc");
 
     return res.status(200).json({ message: "success", payload: positions });
   } catch (error) {
