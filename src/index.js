@@ -31,11 +31,11 @@ app.post("/position", async (req, res) => {
     } else {
       console.log("position not saved");
     }
+    return res.status(200).json({ message: "success", payload: saved });
   } catch (error) {
     console.log("save position error", error);
+    return res.status(500).json({ message: "error", payload: error.message });
   }
-
-  return res.send("ok");
 });
 
 app.get("/position", async (req, res) => {
